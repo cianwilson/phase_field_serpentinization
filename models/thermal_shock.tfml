@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <terraferma_options>
   <geometry>
     <dimension>
@@ -7,7 +7,7 @@
     <mesh name="Mesh">
       <source name="File">
         <file>
-          <string_value lines="1" type="filename">rectangle.xml</string_value>
+          <string_value lines="1" type="filename">rectangle</string_value>
         </file>
         <cell>
           <string_value lines="1">triangle</string_value>
@@ -67,7 +67,7 @@
   </timestepping>
   <global_parameters>
     <ufl>
-      <string_value lines="20" type="code" language="python"># Degradation function
+      <string_value lines="20" type="code" language="python3"># Degradation function
 g = (1. - d_i)**2 + eta
 
 # Strain tensor
@@ -80,7 +80,8 @@ sigma_minus = Ke*0.5*(tr(epsilon) - abs(tr(epsilon)))*Identity(2)
 sigma = g*sigma_plus + sigma_minus
 
 # Tensile component of the elastic energy density
-psi = 0.5*Ke*(0.5*(tr(epsilon) + abs(tr(epsilon))))**2 + G*inner(epsilond, epsilond)</string_value>
+psi = 0.5*Ke*(0.5*(tr(epsilon) + abs(tr(epsilon))))**2 + G*inner(epsilond, epsilond)
+</string_value>
     </ufl>
     <dolfin>
       <allow_extrapolation/>
@@ -250,15 +251,17 @@ values[0] = -delta_T*erfc(x[1]/l/(bucket()-&gt;current_time()));</string_value>
     <nonlinear_solver name="Solver">
       <type name="SNES">
         <form name="Residual" rank="0">
-          <string_value lines="20" type="code" language="python"># Displacement residual
+          <string_value lines="20" type="code" language="python3"># Displacement residual
 epsilon_t = sym(grad(u_t))
-F = inner(epsilon_t, sigma)*dx</string_value>
+F = inner(epsilon_t, sigma)*dx
+</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">F</string_value>
           </ufl_symbol>
         </form>
         <form name="Jacobian" rank="1">
-          <string_value lines="20" type="code" language="python">J = derivative(F,us_i,us_a)</string_value>
+          <string_value lines="20" type="code" language="python3">J = derivative(F,us_i,us_a)
+</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">J</string_value>
           </ufl_symbol>
@@ -337,13 +340,15 @@ F = inner(epsilon_t, sigma)*dx</string_value>
     <nonlinear_solver name="Solver">
       <type name="SNES">
         <form name="Residual" rank="0">
-          <string_value lines="20" type="code" language="python">F = psi_p_t*(psi_p_i - psi)*dx</string_value>
+          <string_value lines="20" type="code" language="python3">F = psi_p_t*(psi_p_i - psi)*dx
+</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">F</string_value>
           </ufl_symbol>
         </form>
         <form name="Jacobian" rank="1">
-          <string_value lines="20" type="code" language="python">J = derivative(F,upsi_i,upsi_a)</string_value>
+          <string_value lines="20" type="code" language="python3">J = derivative(F,upsi_i,upsi_a)
+</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">J</string_value>
           </ufl_symbol>
@@ -408,13 +413,15 @@ F = inner(epsilon_t, sigma)*dx</string_value>
     <nonlinear_solver name="Solver">
       <type name="SNES">
         <form name="Residual" rank="0">
-          <string_value lines="20" type="code" language="python">F = H_t*(H_i - H_n + conditional(gt(psi_p_i, H_n), H_n - psi_p_i, 0.))*dx</string_value>
+          <string_value lines="20" type="code" language="python3">F = H_t*(H_i - H_n + conditional(gt(psi_p_i, H_n), H_n - psi_p_i, 0.))*dx
+</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">F</string_value>
           </ufl_symbol>
         </form>
         <form name="Jacobian" rank="1">
-          <string_value lines="20" type="code" language="python">J = derivative(F,uH_i,uH_a)</string_value>
+          <string_value lines="20" type="code" language="python3">J = derivative(F,uH_i,uH_a)
+</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">J</string_value>
           </ufl_symbol>
@@ -576,14 +583,16 @@ values[0] = value;</string_value>
     <nonlinear_solver name="Solver">
       <type name="SNES">
         <form name="Residual" rank="0">
-          <string_value lines="20" type="code" language="python">F = d_t*(G_c*d_i - 2.*(1. - d_i)*H_i)*dx \
-    + G_c*l*l*inner(grad(d_t), grad(d_i))*dx</string_value>
+          <string_value lines="20" type="code" language="python3">F = d_t*(G_c*d_i - 2.*(1. - d_i)*H_i)*dx \
+    + G_c*l*l*inner(grad(d_t), grad(d_i))*dx
+</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">F</string_value>
           </ufl_symbol>
         </form>
         <form name="Jacobian" rank="1">
-          <string_value lines="20" type="code" language="python">J = derivative(F,ud_i,ud_a)</string_value>
+          <string_value lines="20" type="code" language="python3">J = derivative(F,ud_i,ud_a)
+</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">J</string_value>
           </ufl_symbol>
@@ -643,13 +652,15 @@ values[0] = value;</string_value>
     <nonlinear_solver name="Solve">
       <type name="SNES">
         <form name="Residual" rank="0">
-          <string_value lines="20" type="code" language="python">F = inner(sigmap_t, sigmap_i - sigma)*dx</string_value>
+          <string_value lines="20" type="code" language="python3">F = inner(sigmap_t, sigmap_i - sigma)*dx
+</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">F</string_value>
           </ufl_symbol>
         </form>
         <form name="Jacobian" rank="1">
-          <string_value lines="20" type="code" language="python">J = derivative(F,usigma_i,usigma_a)</string_value>
+          <string_value lines="20" type="code" language="python3">J = derivative(F,usigma_i,usigma_a)
+</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">J</string_value>
           </ufl_symbol>

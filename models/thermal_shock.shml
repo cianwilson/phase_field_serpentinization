@@ -12,7 +12,7 @@
   <simulations>
     <simulation name="thermoelastic_damage">
       <input_file>
-        <string_value lines="1" type="filename">thermal_shock.tfml</string_value>
+        <string_value type="filename" lines="1">thermal_shock.tfml</string_value>
       </input_file>
       <run_when name="input_changed_or_output_missing"/>
       <number_processes>
@@ -24,19 +24,35 @@
             <string_value lines="1">4</string_value>
           </values>
           <update>
-            <string_value lines="20" type="code" language="python">import libspud
+            <string_value type="code" language="python3" lines="20">import libspud
 libspud.set_option("/system::ThermoElasticity/coefficient::IntensityFactor/type::Constant/rank::Scalar/value::WholeMesh/constant",float(intensity))</string_value>
             <single_build/>
           </update>
         </parameter>
       </parameter_sweep>
-      <required_input>
-        <filenames name="Mesh">
-          <string>
-            <string_value lines="1" type="filename">mesh/rectangle.xml</string_value>
-          </string>
-        </filenames>
-      </required_input>
+      <dependencies>
+        <run name="Mesh">
+          <input_file>
+            <string_value type="filename" lines="1">mesh/rectangle.geo</string_value>
+          </input_file>
+          <run_when name="input_changed_or_output_missing"/>
+          <required_output>
+            <filenames name="meshfiles">
+              <python>
+                <string_value type="code" language="python3" lines="20">meshfiles = ["rectangle"+ext for ext in [".xdmf", ".h5", "_cell_ids.xdmf", "_cell_ids.h5", "_facet_ids.xdmf", "_facet_ids.h5"]]</string_value>
+              </python>
+            </filenames>
+          </required_output>
+          <commands>
+            <command name="GMsh">
+              <string_value lines="1">gmsh -2 rectangle.geo -o rectangle.msh</string_value>
+            </command>
+            <command name="Convert">
+              <string_value lines="1">tfgmsh2xdmf rectangle.msh</string_value>
+            </command>
+          </commands>
+        </run>
+      </dependencies>
     </simulation>
   </simulations>
 </harness_options>
