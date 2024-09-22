@@ -287,20 +287,6 @@ F = inner(epsilon_t, sigma)*dx
           <preconditioner name="lu">
             <factorization_package name="mumps"/>
           </preconditioner>
-          <remove_null_space>
-            <null_space name="HorizontalDisplacement">
-              <field name="Displacement">
-                <components>
-                  <integer_value shape="1" rank="1">0</integer_value>
-                </components>
-                <constant>
-                  <real_value rank="0">1.0</real_value>
-                </constant>
-              </field>
-              <monitors/>
-            </null_space>
-            <monitors/>
-          </remove_null_space>
         </linear_solver>
         <never_ignore_solver_failures/>
       </type>
